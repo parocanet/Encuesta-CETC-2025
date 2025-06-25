@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación Transferencia de Competencias - CETC 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .institution-selector {
+            padding: 30px;
+            text-align: center;
+            background: #f8f9fa;
+        }
+
+        .institution-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .institution-btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .btn-fosis {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-subtel {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-gores {
+            background: #27ae60;
+            color: white;
+        }
+
+        .institution-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .survey-form {
+            display: none;
+            padding: 30px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .form-section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+
+        .results-section {
+            display: none;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .download-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .institution-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .radio-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Consejo de Evaluación de Transferencia de Competencias</h1>
+            <p>Evaluación de Competencias Transferidas a Gobiernos Regionales - Segundo Ciclo 2025</p>
+        </div>
+
+        <!-- Selector de Institución -->
+        <div class="institution-selector" id="institutionSelector">
+            <h2>Seleccione su Institución</h2>
+            <div class="institution-buttons">
+                <button class="institution-btn btn-fosis" onclick="selectInstitution('fosis')">
+                    FOSIS
+                </button>
+                <button class="institution-btn btn-subtel" onclick="selectInstitution('subtel')">
+                    SUBTEL
+                </button>
+                <button class="institution-btn btn-gores" onclick="selectInstitution('gores')">
+                    GORES
+                </button>
+            </div>
+        </div>
+
+        <!-- Formulario FOSIS -->
+        <div class="survey-form" id="fosisForm">
+            <button class="back-btn" onclick="showInstitutionSelector()">← Volver</button>
+            <h2>Encuesta - FOSIS</h2>
+            <form id="fosisFormData">
+                <div class="form-section">
+                    <h3>Información General</h3>
+                    <div class="form-group">
+                        <label>Nombre Completo <span class="required">*</span></label>
+                        <input type="text" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cargo/Función <span class="required">*</span></label>
+                        <input type="text" name="cargo" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Región de trabajo <span class="required">*</span></label>
+                        <select name="region" required>
+                            <option value="">Seleccione región</option>
+                            <option value="tarapaca">Tarapacá</option>
+                            <option value="arica">Arica y Parinacota</option>
+                            <option value="valparaiso">Valparaíso</option>
+                            <option value="aysen">Aysén</option>
+                            <option value="coquimbo">Coquimbo</option>
+                            <option value="ohiggins">O'Higgins</option>
+                            <option value="nuble">Ñuble</option>
+                            <option value="araucania">La Araucanía</option>
+                            <option value="lagos">Los Lagos</option>
+                            <option value="rios">Los Ríos</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Años de experiencia en la institución</label>
+                        <select name="experiencia">
+                            <option value="">Seleccione</option>
+                            <option value="menos_1">Menos de 1 año</option>
+                            <option value="1_3">1-3 años</option>
+                            <option value="4_7">4-7 años</option>
+                            <option value="8_15">8-15 años</option>
+                            <option value="mas_15">Más de 15 años</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Indicadores de Proceso - Programas Yo Emprendo y Acción</h3>
+                    <div class="form-group">
+                        <label>Número de comunas focalizadas en su región (2021-2025)</label>
+                        <input type="number" name="comunas_focalizadas" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Número de capacitaciones realizadas a GORES</label>
+                        <input type="number" name="capacitaciones_realizadas" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Número de funcionarios GORE capacitados</label>
+                        <input type="number" name="funcionarios_capacitados" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Porcentaje de cumplimiento de plazos en el proceso (0-100%)</label>
+                        <input type="number" name="cumplimiento_plazos" min="0" max="100">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Indicadores de Resultado</h3>
+                    <div class="form-group">
+                        <label>Número total de beneficiarios atendidos (2021-2025)</label>
+                        <input type="number" name="beneficiarios_total" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Cobertura territorial alcanzada (% de comunas de la región)</label>
+                        <input type="number" name="cobertura_territorial" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Tiempo promedio de tramitación (días)</label>
+                        <input type="number" name="tiempo_tramitacion" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Monto total ejecutado en programas transferidos (millones de pesos)</label>
+                        <input type="number" name="monto_ejecutado" min="0">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Evaluación Cualitativa</h3>
+                    <div class="form-group">
+                        <label>Nivel de conocimiento inicial sobre descentralización (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial" value="1" id="ci1">
+                                <label for="ci1">1 - Muy bajo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial" value="2" id="ci2">
+                                <label for="ci2">2 - Bajo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial" value="3" id="ci3">
+                                <label for="ci3">3 - Medio</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial" value="4" id="ci4">
+                                <label for="ci4">4 - Alto</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial" value="5" id="ci5">
+                                <label for="ci5">5 - Muy alto</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nivel de conocimiento actual sobre descentralización (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual" value="1" id="ca1">
+                                <label for="ca1">1 - Muy bajo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual" value="2" id="ca2">
+                                <label for="ca2">2 - Bajo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual" value="3" id="ca3">
+                                <label for="ca3">3 - Medio</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual" value="4" id="ca4">
+                                <label for="ca4">4 - Alto</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual" value="5" id="ca5">
+                                <label for="ca5">5 - Muy alto</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Calidad de coordinación con GORES (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_gores" value="1" id="cg1">
+                                <label for="cg1">1 - Muy mala</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_gores" value="2" id="cg2">
+                                <label for="cg2">2 - Mala</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_gores" value="3" id="cg3">
+                                <label for="cg3">3 - Regular</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_gores" value="4" id="cg4">
+                                <label for="cg4">4 - Buena</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_gores" value="5" id="cg5">
+                                <label for="cg5">5 - Muy buena</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Percepción sobre relevancia de la transferencia (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia" value="1" id="r1">
+                                <label for="r1">1 - Nada relevante</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia" value="2" id="r2">
+                                <label for="r2">2 - Poco relevante</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia" value="3" id="r3">
+                                <label for="r3">3 - Medianamente relevante</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia" value="4" id="r4">
+                                <label for="r4">4 - Muy relevante</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia" value="5" id="r5">
+                                <label for="r5">5 - Extremadamente relevante</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Observaciones</h3>
+                    <div class="form-group">
+                        <label>Principales desafíos identificados</label>
+                        <textarea name="desafios" rows="3" placeholder="Describa los principales desafíos en el proceso de transferencia"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Mejoras sugeridas</label>
+                        <textarea name="mejoras" rows="3" placeholder="Sugiera mejoras para el proceso"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Enviar Encuesta</button>
+            </form>
+        </div>
+
+        <!-- Formulario SUBTEL -->
+        <div class="survey-form" id="subtelForm">
+            <button class="back-btn" onclick="showInstitutionSelector()">← Volver</button>
+            <h2>Encuesta - SUBTEL</h2>
+            <form id="subtelFormData">
+                <div class="form-section">
+                    <h3>Información General</h3>
+                    <div class="form-group">
+                        <label>Nombre Completo <span class="required">*</span></label>
+                        <input type="text" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cargo/Función <span class="required">*</span></label>
+                        <input type="text" name="cargo" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nivel de trabajo</label>
+                        <select name="nivel_trabajo">
+                            <option value="">Seleccione</option>
+                            <option value="nacional">Nacional</option>
+                            <option value="regional">Regional</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Si trabaja a nivel regional, indique la región</label>
+                        <select name="region">
+                            <option value="">No aplica / Nacional</option>
+                            <option value="arica">Arica y Parinacota</option>
+                            <option value="tarapaca">Tarapacá</option>
+                            <option value="antofagasta">Antofagasta</option>
+                            <option value="atacama">Atacama</option>
+                            <option value="coquimbo">Coquimbo</option>
+                            <option value="valparaiso">Valparaíso</option>
+                            <option value="metropolitana">Metropolitana</option>
+                            <option value="ohiggins">O'Higgins</option>
+                            <option value="maule">Maule</option>
+                            <option value="nuble">Ñuble</option>
+                            <option value="biobio">Biobío</option>
+                            <option value="araucania">La Araucanía</option>
+                            <option value="rios">Los Ríos</option>
+                            <option value="lagos">Los Lagos</option>
+                            <option value="aysen">Aysén</option>
+                            <option value="magallanes">Magallanes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Indicadores de Proceso - Decretos N°298 y N°299</h3>
+                    <div class="form-group">
+                        <label>Número de requerimientos recibidos de GORES (2021-2025)</label>
+                        <input type="number" name="requerimientos_recibidos" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Número de municipios consultados a través de GORES</label>
+                        <input type="number" name="municipios_consultados" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Número de capacitaciones realizadas a GORES</label>
+                        <input type="number" name="capacitaciones_gores" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Número de concesiones de radiodifusión gestionadas</label>
+                        <input type="number" name="concesiones_radiodifusion" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Porcentaje de cumplimiento de plazos de respuesta (0-100%)</label>
+                        <input type="number" name="cumplimiento_plazos" min="0" max="100">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Indicadores de Resultado</h3>
+                    <div class="form-group">
+                        <label>Número de proyectos incluidos en programas subsidiables</label>
+                        <input type="number" name="proyectos_incluidos" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Tiempo promedio de respuesta a requerimientos GORE (días)</label>
+                        <input type="number" name="tiempo_respuesta" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Porcentaje de regiones activas en el proceso (%)</label>
+                        <input type="number" name="regiones_activas" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Recursos financieros invertidos en el proceso (millones de pesos)</label>
+                        <input type="number" name="recursos_invertidos" min="0">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Evaluación Cualitativa</h3>
+                    <div class="form-group">
+                        <label>Calidad de coordinación con GORES (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_gores" value="1" id="cgs1">
+                                <label for="cgs1">1 - Muy mala</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_gores" value="2" id="cgs2">
+                                <label for="cgs2">2 - Mala</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_gores" value="3" id="cgs3">
+                                <label for="cgs3">3 - Regular</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_gores" value="4" id="cgs4">
+                                <label for="cgs4">4 - Buena</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_gores" value="5" id="cgs5">
+                                <label for="cgs5">5 - Muy buena</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Efectividad del proceso de transferencia (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="efectividad" value="1" id="es1">
+                                <label for="es1">1 - Muy inefectivo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="efectividad" value="2" id="es2">
+                                <label for="es2">2 - Inefectivo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="efectividad" value="3" id="es3">
+                                <label for="es3">3 - Regular</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="efectividad" value="4" id="es4">
+                                <label for="es4">4 - Efectivo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="efectividad" value="5" id="es5">
+                                <label for="es5">5 - Muy efectivo</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Valor agregado de la participación de GORES (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="valor_agregado" value="1" id="vas1">
+                                <label for="vas1">1 - Ningún valor</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="valor_agregado" value="2" id="vas2">
+                                <label for="vas2">2 - Poco valor</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="valor_agregado" value="3" id="vas3">
+                                <label for="vas3">3 - Algo de valor</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="valor_agregado" value="4" id="vas4">
+                                <label for="vas4">4 - Mucho valor</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="valor_agregado" value="5" id="vas5">
+                                <label for="vas5">5 - Valor excepcional</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Observaciones</h3>
+                    <div class="form-group">
+                        <label>Principales obstáculos identificados</label>
+                        <textarea name="obstaculos" rows="3" placeholder="Describa los principales obstáculos en el proceso"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Recomendaciones de mejora</label>
+                        <textarea name="recomendaciones" rows="3" placeholder="Proponga mejoras para el proceso"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Enviar Encuesta</button>
+            </form>
+        </div>
+
+        <!-- Formulario GORES -->
+        <div class="survey-form" id="goresForm">
+            <button class="back-btn" onclick="showInstitutionSelector()">← Volver</button>
+            <h2>Encuesta - GORES</h2>
+            <form id="goresFormData">
+                <div class="form-section">
+                    <h3>Información General</h3>
+                    <div class="form-group">
+                        <label>Nombre Completo <span class="required">*</span></label>
+                        <input type="text" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cargo/Función <span class="required">*</span></label>
+                        <input type="text" name="cargo" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Región <span class="required">*</span></label>
+                        <select name="region" required>
+                            <option value="">Seleccione región</option>
+                            <option value="arica">Arica y Parinacota</option>
+                            <option value="tarapaca">Tarapacá</option>
+                            <option value="antofagasta">Antofagasta</option>
+                            <option value="atacama">Atacama</option>
+                            <option value="coquimbo">Coquimbo</option>
+                            <option value="valparaiso">Valparaíso</option>
+                            <option value="metropolitana">Metropolitana</option>
+                            <option value="ohiggins">O'Higgins</option>
+                            <option value="maule">Maule</option>
+                            <option value="nuble">Ñuble</option>
+                            <option value="biobio">Biobío</option>
+                            <option value="araucania">La Araucanía</option>
+                            <option value="rios">Los Ríos</option>
+                            <option value="lagos">Los Lagos</option>
+                            <option value="aysen">Aysén</option>
+                            <option value="magallanes">Magallanes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>División/Departamento</label>
+                        <input type="text" name="division" placeholder="Ej: División de Fomento, División Social">
+                    </div>
+                    <div class="form-group">
+                        <label>Competencia(s) en las que participa</label>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <div class="radio-option">
+                                <input type="checkbox" name="competencias[]" value="fosis" id="comp_fosis">
+                                <label for="comp_fosis">FOSIS (Yo Emprendo y Acción)</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="checkbox" name="competencias[]" value="subtel" id="comp_subtel">
+                                <label for="comp_subtel">SUBTEL (Telecomunicaciones)</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="checkbox" name="competencias[]" value="radiodifusion" id="comp_radio">
+                                <label for="comp_radio">Radiodifusión Comunitaria</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Indicadores de Proceso - FOSIS</h3>
+                    <div class="form-group">
+                        <label>Número de procesos de focalización realizados (2021-2025)</label>
+                        <input type="number" name="procesos_focalizacion" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Número de sesiones CORE para aprobación de focalizaciones</label>
+                        <input type="number" name="sesiones_core" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Número de funcionarios asignados a la competencia</label>
+                        <input type="number" name="funcionarios_asignados_fosis" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Horas mensuales dedicadas a la competencia FOSIS</label>
+                        <input type="number" name="horas_mensuales_fosis" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Porcentaje de cumplimiento de plazos FOSIS (0-100%)</label>
+                        <input type="number" name="cumplimiento_plazos_fosis" min="0" max="100">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Indicadores de Proceso - SUBTEL</h3>
+                    <div class="form-group">
+                        <label>Número de requerimientos enviados a municipios</label>
+                        <input type="number" name="requerimientos_municipios" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Número de municipios contactados</label>
+                        <input type="number" name="municipios_contactados" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Número de funcionarios asignados a competencia SUBTEL</label>
+                        <input type="number" name="funcionarios_asignados_subtel" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Horas mensuales dedicadas a competencia SUBTEL</label>
+                        <input type="number" name="horas_mensuales_subtel" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Recursos financieros utilizados en proceso SUBTEL (miles de pesos)</label>
+                        <input type="number" name="recursos_subtel" min="0">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Indicadores de Resultado</h3>
+                    <div class="form-group">
+                        <label>Número de beneficiarios alcanzados en programas FOSIS</label>
+                        <input type="number" name="beneficiarios_fosis" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Porcentaje de cobertura territorial lograda (%)</label>
+                        <input type="number" name="cobertura_territorial_gore" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Tiempo promedio de tramitación interna (días)</label>
+                        <input type="number" name="tiempo_tramitacion_gore" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Número de proyectos de telecomunicaciones identificados</label>
+                        <input type="number" name="proyectos_telecom" min="0">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Evaluación de Conocimientos</h3>
+                    <div class="form-group">
+                        <label>Nivel de conocimiento inicial sobre FOSIS (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial_fosis" value="1" id="cif1">
+                                <label for="cif1">1 - Muy bajo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial_fosis" value="2" id="cif2">
+                                <label for="cif2">2 - Bajo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial_fosis" value="3" id="cif3">
+                                <label for="cif3">3 - Medio</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial_fosis" value="4" id="cif4">
+                                <label for="cif4">4 - Alto</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial_fosis" value="5" id="cif5">
+                                <label for="cif5">5 - Muy alto</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nivel de conocimiento actual sobre FOSIS (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual_fosis" value="1" id="caf1">
+                                <label for="caf1">1 - Muy bajo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual_fosis" value="2" id="caf2">
+                                <label for="caf2">2 - Bajo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual_fosis" value="3" id="caf3">
+                                <label for="caf3">3 - Medio</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual_fosis" value="4" id="caf4">
+                                <label for="caf4">4 - Alto</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual_fosis" value="5" id="caf5">
+                                <label for="caf5">5 - Muy alto</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nivel de conocimiento inicial sobre telecomunicaciones (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial_subtel" value="1" id="cis1">
+                                <label for="cis1">1 - Muy bajo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial_subtel" value="2" id="cis2">
+                                <label for="cis2">2 - Bajo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial_subtel" value="3" id="cis3">
+                                <label for="cis3">3 - Medio</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial_subtel" value="4" id="cis4">
+                                <label for="cis4">4 - Alto</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_inicial_subtel" value="5" id="cis5">
+                                <label for="cis5">5 - Muy alto</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nivel de conocimiento actual sobre telecomunicaciones (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual_subtel" value="1" id="cas1">
+                                <label for="cas1">1 - Muy bajo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual_subtel" value="2" id="cas2">
+                                <label for="cas2">2 - Bajo</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual_subtel" value="3" id="cas3">
+                                <label for="cas3">3 - Medio</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual_subtel" value="4" id="cas4">
+                                <label for="cas4">4 - Alto</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="conocimiento_actual_subtel" value="5" id="cas5">
+                                <label for="cas5">5 - Muy alto</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Evaluación de Coordinación</h3>
+                    <div class="form-group">
+                        <label>Calidad de coordinación con FOSIS (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_fosis" value="1" id="cgf1">
+                                <label for="cgf1">1 - Muy mala</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_fosis" value="2" id="cgf2">
+                                <label for="cgf2">2 - Mala</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_fosis" value="3" id="cgf3">
+                                <label for="cgf3">3 - Regular</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_fosis" value="4" id="cgf4">
+                                <label for="cgf4">4 - Buena</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_fosis" value="5" id="cgf5">
+                                <label for="cgf5">5 - Muy buena</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Calidad de coordinación con SUBTEL (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_subtel" value="1" id="cgs1">
+                                <label for="cgs1">1 - Muy mala</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_subtel" value="2" id="cgs2">
+                                <label for="cgs2">2 - Mala</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_subtel" value="3" id="cgs3">
+                                <label for="cgs3">3 - Regular</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_subtel" value="4" id="cgs4">
+                                <label for="cgs4">4 - Buena</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_subtel" value="5" id="cgs5">
+                                <label for="cgs5">5 - Muy buena</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Efectividad de coordinación con municipios (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_municipios" value="1" id="cgm1">
+                                <label for="cgm1">1 - Muy mala</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_municipios" value="2" id="cgm2">
+                                <label for="cgm2">2 - Mala</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_municipios" value="3" id="cgm3">
+                                <label for="cgm3">3 - Regular</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_municipios" value="4" id="cgm4">
+                                <label for="cgm4">4 - Buena</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="coordinacion_municipios" value="5" id="cgm5">
+                                <label for="cgm5">5 - Muy buena</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Impacto y Relevancia</h3>
+                    <div class="form-group">
+                        <label>Relevancia de competencia FOSIS para gestión regional (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia_fosis" value="1" id="rf1">
+                                <label for="rf1">1 - Nada relevante</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia_fosis" value="2" id="rf2">
+                                <label for="rf2">2 - Poco relevante</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia_fosis" value="3" id="rf3">
+                                <label for="rf3">3 - Medianamente relevante</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia_fosis" value="4" id="rf4">
+                                <label for="rf4">4 - Muy relevante</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia_fosis" value="5" id="rf5">
+                                <label for="rf5">5 - Extremadamente relevante</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Relevancia de competencia SUBTEL para gestión regional (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia_subtel" value="1" id="rs1">
+                                <label for="rs1">1 - Nada relevante</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia_subtel" value="2" id="rs2">
+                                <label for="rs2">2 - Poco relevante</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia_subtel" value="3" id="rs3">
+                                <label for="rs3">3 - Medianamente relevante</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia_subtel" value="4" id="rs4">
+                                <label for="rs4">4 - Muy relevante</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="relevancia_subtel" value="5" id="rs5">
+                                <label for="rs5">5 - Extremadamente relevante</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Impacto en descentralización efectiva (1-5)</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" name="impacto_descentralizacion" value="1" id="id1">
+                                <label for="id1">1 - Sin impacto</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="impacto_descentralizacion" value="2" id="id2">
+                                <label for="id2">2 - Poco impacto</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="impacto_descentralizacion" value="3" id="id3">
+                                <label for="id3">3 - Impacto moderado</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="impacto_descentralizacion" value="4" id="id4">
+                                <label for="id4">4 - Alto impacto</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" name="impacto_descentralizacion" value="5" id="id5">
+                                <label for="id5">5 - Impacto transformador</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Observaciones</h3>
+                    <div class="form-group">
+                        <label>Principales obstáculos enfrentados</label>
+                        <textarea name="obstaculos_gore" rows="3" placeholder="Describa los principales obstáculos en la implementación"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Oportunidades identificadas</label>
+                        <textarea name="oportunidades" rows="3" placeholder="Describa las oportunidades detectadas en el proceso"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Propuestas de mejora</label>
+                        <textarea name="propuestas_mejora" rows="3" placeholder="Proponga mejoras específicas para el proceso"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Enviar Encuesta</button>
+            </form>
+        </div>
+
+        <!-- Sección de Resultados -->
+        <div class="results-section" id="resultsSection">
+            <h2>¡Gracias por su participación!</h2>
+            <p>Su encuesta ha sido registrada exitosamente.</p>
+            <div>
+                <button class="download-btn" onclick="downloadCSV()">Descargar CSV</button>
+                <button class="download-btn" onclick="downloadExcel()">Descargar Excel</button>
+                <button class="download-btn" onclick="viewResults()">Ver Resultados</button>
+            </div>
+            <button class="back-btn" onclick="resetForm()">Nueva Encuesta</button>
+        </div>
+    </div>
+
+    <script>
+        // Datos almacenados en memoria
+        let surveyData = {
+            fosis: [],
+            subtel: [],
+            gores: []
+        };
+
+        // Cargar datos existentes del localStorage si están disponibles
+        if (typeof(Storage) !== "undefined") {
+            const stored = localStorage.getItem('cetc_survey_data');
+            if (stored) {
+                try {
+                    surveyData = JSON.parse(stored);
+                } catch (e) {
+                    console.log('No se pudieron cargar datos previos');
+                }
+            }
+        }
+
+        function selectInstitution(institution) {
+            document.getElementById('institutionSelector').style.display = 'none';
+            document.getElementById(institution + 'Form').style.display = 'block';
+        }
+
+        function showInstitutionSelector() {
+            document.getElementById('institutionSelector').style.display = 'block';
+            document.getElementById('fosisForm').style.display = 'none';
+            document.getElementById('subtelForm').style.display = 'none';
+            document.getElementById('goresForm').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'none';
+        }
+
+        function resetForm() {
+            showInstitutionSelector();
+            // Limpiar formularios
+            document.getElementById('fosisFormData').reset();
+            document.getElementById('subtelFormData').reset();
+            document.getElementById('goresFormData').reset();
+        }
+
+        // Función para guardar datos
+        function saveData() {
+            if (typeof(Storage) !== "undefined") {
+                localStorage.setItem('cetc_survey_data', JSON.stringify(surveyData));
+            }
+        }
+
+        // Manejar envío de formulario FOSIS
+        document.getElementById('fosisFormData').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = {
+                timestamp: new Date().toISOString(),
+                institucion: 'FOSIS'
+            };
+            
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            surveyData.fosis.push(data);
+            saveData();
+            showResults();
+        });
+
+        // Manejar envío de formulario SUBTEL
+        document.getElementById('subtelFormData').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = {
+                timestamp: new Date().toISOString(),
+                institucion: 'SUBTEL'
+            };
+            
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            surveyData.subtel.push(data);
+            saveData();
+            showResults();
+        });
+
+        // Manejar envío de formulario GORES
+        document.getElementById('goresFormData').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = {
+                timestamp: new Date().toISOString(),
+                institucion: 'GORES'
+            };
+            
+            // Manejar checkboxes de competencias
+            const competencias = [];
+            const checkboxes = document.querySelectorAll('input[name="competencias[]"]:checked');
+            checkboxes.forEach(cb => competencias.push(cb.value));
+            data.competencias = competencias.join(', ');
+            
+            for (let [key, value] of formData.entries()) {
+                if (key !== 'competencias[]') {
+                    data[key] = value;
+                }
+            }
+            
+            surveyData.gores.push(data);
+            saveData();
+            showResults();
+        });
+
+        function showResults() {
+            document.getElementById('fosisForm').style.display = 'none';
+            document.getElementById('subtelForm').style.display = 'none';
+            document.getElementById('goresForm').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'block';
+        }
+
+        function downloadCSV() {
+            const allData = [
+                ...surveyData.fosis,
+                ...surveyData.subtel,
+                ...surveyData.gores
+            ];
+            
+            if (allData.length === 0) {
+                alert('No hay datos para descargar');
+                return;
+            }
+            
+            // Obtener todas las columnas únicas
+            const columns = new Set();
+            allData.forEach(row => {
+                Object.keys(row).forEach(key => columns.add(key));
+            });
+            
+            const columnArray = Array.from(columns);
+            
+            // Crear CSV
+            let csv = columnArray.join(',') + '\n';
+            
+            allData.forEach(row => {
+                const values = columnArray.map(col => {
+                    const value = row[col] || '';
+                    // Escapar comillas y envolver en comillas si es necesario
+                    if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+                        return '"' + value.replace(/"/g, '""') + '"';
+                    }
+                    return value;
+                });
+                csv += values.join(',') + '\n';
+            });
+            
+            // Descargar
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'encuesta_transferencia_competencias_' + new Date().toISOString().split('T')[0] + '.csv';
+            link.click();
+        }
+
+        function downloadExcel() {
+            // Para una implementación completa de Excel, se necesitaría una librería como SheetJS
+            // Por ahora, descargamos como CSV con extensión .xls
+            const allData = [
+                ...surveyData.fosis,
+                ...surveyData.subtel,
+                ...surveyData.gores
+            ];
+            
+            if (allData.length === 0) {
+                alert('No hay datos para descargar');
+                return;
+            }
+            
+            // Crear contenido compatible con Excel
+            const columns = new Set();
+            allData.forEach(row => {
+                Object.keys(row).forEach(key => columns.add(key));
+            });
+            
+            const columnArray = Array.from(columns);
+            let content = columnArray.join('\t') + '\n';
+            
+            allData.forEach(row => {
+                const values = columnArray.map(col => row[col] || '');
+                content += values.join('\t') + '\n';
+            });
+            
+            const blob = new Blob([content], { type: 'application/vnd.ms-excel' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'encuesta_transferencia_competencias_' + new Date().toISOString().split('T')[0] + '.xls';
+            link.click();
+        }
+
+        function viewResults() {
+            const totalResponses = surveyData.fosis.length + surveyData.subtel.length + surveyData.gores.length;
+            
+            let summary = `RESUMEN DE RESPUESTAS\n\n`;
+            summary += `Total de respuestas: ${totalResponses}\n`;
+            summary += `- FOSIS: ${surveyData.fosis.length} respuestas\n`;
+            summary += `- SUBTEL: ${surveyData.subtel.length} respuestas\n`;
+            summary += `- GORES: ${surveyData.gores.length} respuestas\n\n`;
+            
+            if (surveyData.gores.length > 0) {
+                const regiones = surveyData.gores.map(r => r.region).filter(r => r);
+                const regionesUnicas = [...new Set(regiones)];
+                summary += `Regiones participantes: ${regionesUnicas.join(', ')}\n\n`;
+            }
+            
+            alert(summary);
+        }
+
+        // Mostrar cantidad de respuestas en tiempo real
+        function updateResponseCount() {
+            const total = surveyData.fosis.length + surveyData.subtel.length + surveyData.gores.length;
+            if (total > 0) {
+                document.querySelector('.header p').innerHTML = 
+                    `Evaluación de Competencias Transferidas a Gobiernos Regionales - Segundo Ciclo 2025<br>
+                     <small style="opacity: 0.8;">Respuestas registradas: ${total}</small>`;
+            }
+        }
+
+        // Actualizar contador al cargar la página
+        updateResponseCount();
+    </script>
+</body>
+</html>
